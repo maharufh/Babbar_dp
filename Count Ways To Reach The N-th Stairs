@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+#define MOD 1000000007
+int countDistinctWays(int nStairs) {
+// Write your code here.
+
+ 
+vector<int>arr(nStairs+1,0);
+arr[0]=1;
+arr[1]=1;
+for(int i=2;i<=nStairs;i++){
+arr[i]=(arr[i-1]+arr[i-2])%MOD;
+
+ 
+}
+return arr[nStairs];
+}
