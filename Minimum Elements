@@ -1,0 +1,66 @@
+#include <bits/stdc++.h> 
+int memoHelper(int ind,int t,vector<int>&num,vector<vector<int>>&dp){
+    if(ind==0){
+        if(t%num[0]==0) return t/num[0];
+        else return (int)1e9;
+    }
+    if(dp[ind][t]!=-1) return dp[ind][t];
+    int notTake=0+memoHelper(ind-1,t,num,dp);
+    int take=INT_MAX;
+    if(num[ind]<=t)
+        take=1+memoHelper(ind,t-num[ind],num,dp);
+    return dp[ind][t]=min(take,notTake);    
+}
+int minimumElements(vector<int> &num, int x)
+{
+    int n=num.size();
+    // vector<vector<int>>dp(n,vector<int>(x+1,-1));
+    // int ans=memoHelper(n-1,x,num,dp);
+    // vector<vector<int>>dp(n,vector<int>(x+1,0));
+    // //base case
+    // for(int i=0;i<=x;i++){
+    //     if(i%num[0]==0){
+    //         dp[0][i]=(i/num[0]);
+    //     }else{
+    //         dp[0][i]=1e9;
+    //     }
+    // }
+ 
+    // for(int ind=1;ind<n;ind++){
+    //     for(int tar=0;tar<=x;tar++){
+    //         int notTake=dp[ind-1][tar];
+    //         int take=1e9;
+    //         if(num[ind]<=tar)
+    //         take=1+dp[ind][tar-num[ind]];
+    //         dp[ind][tar]=min(take,notTake);
+    //     }
+    // }
+    // int ans=dp[n-1][x];
+ 
+    //space optimization
+    vector<int>prev(x+1,0),cur(x+1,0);
+    //base case
+    for(int i=0;i<=x;i++){
+        if(i%num[0]==0){
+            prev[i]=(i/num[0]);
+        }else{
+            prev[i]=1e9;
+        }
+    }
+ 
+    for(int ind=1;ind<n;ind++){
+        for(int tar=0;tar<=x;tar++){
+            int notTake=prev[tar];
+            int take=1e9;
+            if(num[ind]<=tar)
+            take=1+cur[tar-num[ind]];
+            cur[tar]=min(take,notTake);
+        }
+        prev=cur;
+    }
+    int ans=prev[x];
+    if(ans>=1e9)
+        return -1;
+    return ans; 
+}
+ 
