@@ -1,0 +1,87 @@
+long long int solveRec(std::vector<int>& valueInHouse, int index) {
+int n = valueInHouse.size();
+if (index >= n) {
+return 0;
+}
+ 
+// included the element
+long long int incl = valueInHouse[index] + solveRec(valueInHouse, index + 2);
+// not included the element
+long long int excl = solveRec(valueInHouse, index + 1);
+ 
+return std::max(incl, excl);
+}
+ 
+long long int solveTab(std::vector<int>& nums) {
+int n = nums.size();
+if (n == 0) {
+return 0;
+}
+std::vector<int> dp(n, -1);
+dp[0] = nums[0];
+ 
+for(int i = 1; i < n; i++){
+// included the element
+int incl = nums[i] + (i - 2 >= 0 ? dp[i - 2] : 0);
+// not included the element
+int excl = dp[i - 1];
+dp[i] = std::max(incl, excl);
+}
+ 
+// included the element
+return dp[n - 1];
+}
+ 
+long long int solveMem(std::vector<int>& valueInHouse, int index , std::vector<int>& dp) {
+int n = valueInHouse.size();
+if (index >= n) {
+return 0;
+}
+ 
+if (dp[index] != -1) {
+return dp[index];
+}
+ 
+// included the element
+long long int incl = valueInHouse[index] + solveMem(valueInHouse, index + 2, dp);
+// not included the element
+long long int excl = solveMem(valueInHouse, index + 1, dp);
+ 
+dp[index] = std::max(incl, excl);
+return dp[index];
+}
+ 
+long long int solve(std::vector<int>& valueInHouse){
+long long int prev2 = valueInHouse[0];
+long long int prev1 = 0;
+ 
+for (int i = 1; i < valueInHouse.size(); i++) {
+long long int incl = valueInHouse[i] + prev1;
+long long int excl = prev2+0;
+long long int ans = std::max(incl, excl);
+prev1 = prev2;
+prev2 = ans;
+}
+ 
+return prev2;
+}
+ 
+long long int houseRobber(std::vector<int>& valueInHouse) {
+int n = valueInHouse.size();
+if (n == 1) {
+return valueInHouse[0];
+}
+ 
+std::vector<int> first;
+std::vector<int> second;
+ 
+for (int i = 0; i < n - 1; i++) {
+first.push_back(valueInHouse[i]);
+}
+for (int j = 1; j < n; j++) {
+second.push_back(valueInHouse[j]);
+}
+ 
+return std::max(solve(first), solve(second));
+}
+ 
