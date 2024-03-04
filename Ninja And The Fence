@@ -1,0 +1,31 @@
+// SPACE OPTIMISATION METHOD
+ 
+#include <bits/stdc++.h> 
+#define MOD 1000000007
+// int add(int a,int b)
+// {
+//     return (a%MOD + b%MOD)%MOD;
+// }
+// int multiply(int a,int b)
+// {
+//     return (a%MOD * 1ll * b%MOD)%MOD;
+// }
+int solve(int n,int k)
+{
+    int backToBack=k;
+    int back=(k*k*1ll)%MOD;
+    
+    for(int i=3;i<=n;i++)
+    {
+        int ans=( ((backToBack%MOD +back%MOD)* 1ll *(k-1)%MOD) )%MOD;
+        backToBack=back;
+        back=ans;
+    }
+    return back;
+
+ 
+}
+int numberOfWays(int n, int k) 
+{
+    return solve(n, k);
+}
