@@ -1,0 +1,28 @@
+int m(vector<int>days,vector<int>cost){
+vector<int>dp(days.size()+1);
+dp[days.size()]=0;
+for(int i=days.size()-1;i>=0;i--){
+int case1=cost[0]+dp[i+1];
+ 
+//case2
+int temp=i;
+while(temp<days.size() and days[temp]<days[i]+7) temp++;
+int case2=cost[1]+dp[temp];
+ 
+//case3
+temp=i;
+while(temp<days.size() and days[temp]<days[i]+30) temp++;
+int case3=cost[2]+dp[temp];
+ 
+int minimum=min(case1,min(case2,case3));
+dp[i]=minimum;
+}
+return dp[0];
+}
+ 
+int minimumCoins(int n, vector<int> days, vector<int> cost)
+{
+// Write your code here.
+ 
+return m(days,cost);
+}
