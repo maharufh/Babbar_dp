@@ -1,0 +1,33 @@
+#include <bits/stdc++.h> 
+int memoHelper(int i,int j,string&s,string&t,vector<vector<int>>&dp){
+    if(i<0) return j+1;
+    if(j<0) return i+1;
+    if(dp[i][j]!=-1) return dp[i][j];
+    if(s[i]==t[j]){
+        return dp[i][j]=memoHelper(i-1,j-1,s,t,dp);
+    }else{
+        return dp[i][j]=1+min(memoHelper(i-1,j,s,t,dp),
+        min(memoHelper(i,j-1,s,t,dp),memoHelper(i-1,j-1,s,t,dp)));
+    }
+}
+int editDistance(string s, string t)
+{
+    int n=s.size();
+    int m=t.size();
+    vector<int>prev(m+1,0),cur(m+1,0);
+    for(int j=0;j<=m;j++) prev[j]=j;
+ 
+    for(int i=1;i<=n;i++){
+        cur[0]=i;
+        for(int j=1;j<=m;j++){
+           if(s[i-1]==t[j-1]){
+               cur[j]=prev[j-1];
+           }else{
+               cur[j]=1+min(prev[j],min(cur[j-1],prev[j-1]));
+           }
+        }
+        prev=cur;
+    }
+    return prev[m];
+}
+ 
