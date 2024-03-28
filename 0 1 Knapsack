@@ -1,5 +1,5 @@
 #include <bits/stdc++.h> 
- 
+ // always try to make more optimze
 int solve(int index, vector<int> weight, vector<int> value, int maxWeight) {
     if(index == 0 ) {
         if(maxWeight >= weight[index]) return value[index];
